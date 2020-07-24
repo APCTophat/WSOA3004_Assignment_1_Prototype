@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Zahava_Scene.unity
+    guid: 9160d5c935095414392275a231e1b4f7
+  - enabled: 1
+    path: Assets/Scenes/Main_Scene.unity
+    guid: 38275b8dd7856d54988f057d711dd1a1
   m_configObjects: {}

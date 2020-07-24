@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Hamster_Stats_Scripts : MonoBehaviour
 {
@@ -57,9 +58,23 @@ public class Hamster_Stats_Scripts : MonoBehaviour
     public Image _uiHappiness;
     public Image _uiFitness;
 
+    public GameObject LoseText;
+
+    public string Main_Scene;
+
+    public GameObject EndScreenSound;
+    public GameObject MainMusic;
+
     void Start()
     {
-     
+        
+    }
+
+    private void Awake()
+    {
+        _movingRandomly = GetComponent<Hamster_Movement_Script>()._canMoveRandomly;
+        LoseText.SetActive(false);
+        EndScreenSound.SetActive(false);
     }
 
 
@@ -170,6 +185,10 @@ public class Hamster_Stats_Scripts : MonoBehaviour
             isDrinking = false;
         }
         ResourseCounter();
+        CheckLoseCondition();
+        UIUpdate();
+
+       
     }
 
     public void UIUpdate()
@@ -191,14 +210,30 @@ public class Hamster_Stats_Scripts : MonoBehaviour
             Happiness = HappinessMax;
         }
 
-        _uiHealth.fillAmount = Health / HealthMax;
+        _uiHealth.fillAmount = Health / HealthMax ;
         _uiHappiness.fillAmount = Happiness / HappinessMax;
         _uiFitness.fillAmount = Fitness / FitnessMax;
     }
 
+    public void CheckLoseCondition()
+    {
+        if(Health <= 0 || Fitness <= 0 || Happiness <= 0)
+        {
+            Invoke("LoadMenu", 2f);
+            LoseText.SetActive(true);
+            EndScreenSound.SetActive(true);
+            MainMusic.SetActive(false);
+        }
+        
+    }
+    public void LoadMenu()
+    {
+        SceneManager.LoadScene(Main_Scene);
+    }
     public void OnTriggerEnter(Collider other)
     {
-       // Debug.Log(other.gameObject.name);
+        
+        //Debug.Log(other.gameObject.name);
         if (!_movingRandomly)
         {
             if (other.gameObject.name == _resourceFood)
