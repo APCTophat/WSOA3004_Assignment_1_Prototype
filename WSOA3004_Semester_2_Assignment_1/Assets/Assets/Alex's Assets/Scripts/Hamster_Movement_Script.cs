@@ -10,11 +10,15 @@ public class Hamster_Movement_Script : MonoBehaviour
     public Vector3 _tempRandomLocation;
 
     public bool _canMoveRandomly;
+    public bool _ranMoveInstance;
 
     public float _ranMovementSpeed;
+    public float _ranSmoothTime;
     public float _ranMovementIntervalsMin;
     public float _ranMovementIntervalsMax;
     public int _ranMovementArraySize;
+
+
 
     //variables relating to controlled movement
     public Vector3 foodLocation;
@@ -22,11 +26,13 @@ public class Hamster_Movement_Script : MonoBehaviour
     public Vector3 fitnessLocation;
     public string foodName;
     public string waterName;
-
     public string fitnessName;
+    public string hamsterName;
 
     public bool isMoving;
+    public bool commandInstance;
     public float hamsterMoveSpeed;
+    public float hamserSmoothTime;
 
     public Vector3 currentPosition;
     public Vector3 targetPosition;
@@ -34,12 +40,18 @@ public class Hamster_Movement_Script : MonoBehaviour
     private IEnumerator coroutine;
     public LayerMask _InteractableObjectLayer;
 
-    
+    //bools to interact with the hamster's stats
+    public bool isDrinking;
+    public bool isEating;
+    public bool isRunning;
+    public bool isPlaying;
+   
+
     void Start()
     {
         _InteractableObjectLayer = LayerMask.GetMask("Interactable");
-
-        randomHamsterLocation();
+        Invoke("randomHamsterLocation", 3f);
+        commandInstance = false;
     }
 
     private void FixedUpdate()
@@ -51,31 +63,44 @@ public class Hamster_Movement_Script : MonoBehaviour
     }
     private IEnumerator randomMoveHamsterCoroutine()
     {
+        _ranMoveInstance = true;
+        //Debug.Log("Random movement start");
         if (_canMoveRandomly)
         {
             while (Vector3.Distance(transform.position, _tempRandomLocation) > 0.05f)
             {
-                float TempX = Mathf.Lerp(transform.position.x, _tempRandomLocation.x, _ranMovementSpeed * Time.deltaTime);
+                float TempX = Mathf.SmoothDamp(transform.position.x, _tempRandomLocation.x, ref _ranMovementSpeed, _ranSmoothTime);
+               // float TempX = Mathf.Lerp(transform.position.x, _tempRandomLocation.x, _ranMovementSpeed * Time.deltaTime);
                 transform.position = new Vector3(TempX, transform.position.y, transform.position.z);
                 yield return null;
             }
         }
+        _ranMoveInstance = false;
         yield return new WaitForSeconds(Random.Range(_ranMovementIntervalsMin, _ranMovementIntervalsMax));
-
+        
         randomHamsterLocation();
     }
 
 
     public void randomHamsterLocation()
     {
-        //Debug.Log("New Location to move to");
-        int num = Random.Range(0, _ranMovementArraySize);
-        _tempRandomLocation = _moveLocation[num];
-        StartCoroutine("randomMoveHamsterCoroutine");
-        
+        if (_canMoveRandomly)
+        {
+            if (!_ranMoveInstance)
+            {
+                isPlaying = false;
+                //Debug.Log("New Location to move to");
+                int num = Random.Range(0, _ranMovementArraySize);
+                _tempRandomLocation = _moveLocation[num];
+                StartCoroutine("randomMoveHamsterCoroutine");
+            }
+        }
+               
     }
     private IEnumerator MoveHamsterCoroutine(Vector3 targetPosition)
     {
+       // Debug.Log("Command movement start");
+        commandInstance = true;
         StopCoroutine("randomMoveHamsterCoroutine");
         _canMoveRandomly = false;
         if (!isMoving)
@@ -83,7 +108,8 @@ public class Hamster_Movement_Script : MonoBehaviour
             while (Vector3.Distance(transform.position, targetPosition) > 0.05f)
             {
                 isMoving = true;
-                float TempX = Mathf.Lerp(transform.position.x, targetPosition.x, hamsterMoveSpeed * Time.deltaTime);
+                float TempX = Mathf.SmoothDamp(transform.position.x, targetPosition.x, ref hamsterMoveSpeed, hamserSmoothTime);
+               // float TempX = Mathf.Lerp(transform.position.x, targetPosition.x, hamsterMoveSpeed * Time.deltaTime);
                 transform.position = new Vector3(TempX, transform.position.y, transform.position.z);
                 yield return null;
             }
@@ -92,9 +118,10 @@ public class Hamster_Movement_Script : MonoBehaviour
         }
          //Debug.Log("Instucted movement done");
         _tempRandomLocation = transform.position;
-        StartCoroutine("randomMoveHamsterCoroutine");
-        yield return null;
+         StartCoroutine("randomMoveHamsterCoroutine");
         
+        yield return null;
+        commandInstance = false;
     }
 
    
@@ -114,10 +141,13 @@ public class Hamster_Movement_Script : MonoBehaviour
         RaycastHit HIT;
         if (Physics.Raycast(ray, out HIT, _InteractableObjectLayer))
         {
-         
            if(HIT.transform != null)
             {
-                HamserMove(HIT.transform.gameObject.name);
+                if (!commandInstance)
+                {
+                    HamserMove(HIT.transform.gameObject.name);
+                }
+                
             }
 
         }
@@ -127,22 +157,24 @@ public class Hamster_Movement_Script : MonoBehaviour
     {
         if(ObjectName == waterName)
         {
-            
             targetPosition = waterLocation;
             StartCoroutine(MoveHamsterCoroutine(targetPosition));
-           
         }
         else if (ObjectName == foodName)
         {
-            
             targetPosition = foodLocation;
             StartCoroutine(MoveHamsterCoroutine(targetPosition));
         }
         else if (ObjectName == fitnessName)
-        {
-            
+        {   
             targetPosition = fitnessLocation;
             StartCoroutine(MoveHamsterCoroutine(targetPosition));
+        }
+        else if(ObjectName == hamsterName)
+        {
+            targetPosition = transform.position;
+            StartCoroutine(MoveHamsterCoroutine(targetPosition));
+            isPlaying = true;
         }
 
 

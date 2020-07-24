@@ -209,9 +209,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -5.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1179920925}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &945158895
 GameObject:
@@ -598,8 +599,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179920924}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2040814019}
@@ -607,8 +608,8 @@ Transform:
   - {fileID: 945158896}
   - {fileID: 2063170137}
   - {fileID: 1097939498}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 831184973}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1251759298
 GameObject:
@@ -622,8 +623,10 @@ GameObject:
   - component: {fileID: 1251759301}
   - component: {fileID: 1251759300}
   - component: {fileID: 1251759299}
+  - component: {fileID: 1251759305}
   - component: {fileID: 1251759303}
-  m_Layer: 9
+  - component: {fileID: 1251759304}
+  m_Layer: 8
   m_Name: Hamster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,10 +702,10 @@ Transform:
   m_GameObject: {fileID: 1251759298}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3.5, z: -1}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1251759303
 MonoBehaviour:
@@ -724,9 +727,11 @@ MonoBehaviour:
   - {x: 4, y: -3.5, z: -1}
   _tempRandomLocation: {x: 0, y: 0, z: 0}
   _canMoveRandomly: 1
+  _ranMoveInstance: 0
   _ranMovementSpeed: 1
-  _ranMovementIntervalsMin: 4
-  _ranMovementIntervalsMax: 5
+  _ranSmoothTime: 3
+  _ranMovementIntervalsMin: 1
+  _ranMovementIntervalsMax: 1.1
   _ranMovementArraySize: 5
   foodLocation: {x: -6.5, y: -3.5, z: -1}
   waterLocation: {x: 7.5, y: -3.5, z: -1}
@@ -734,13 +739,82 @@ MonoBehaviour:
   foodName: Food
   waterName: Water
   fitnessName: Fitness
+  hamsterName: Hamster
   isMoving: 0
+  commandInstance: 0
   hamsterMoveSpeed: 4
+  hamserSmoothTime: 1
   currentPosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   _InteractableObjectLayer:
     serializedVersion: 2
     m_Bits: 0
+  isDrinking: 0
+  isEating: 0
+  isRunning: 0
+  isPlaying: 0
+--- !u!114 &1251759304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251759298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e77ea49d89fd041b43392a9f57c8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 7
+  HealthMax: 10
+  Happiness: 7
+  HappinessMax: 10
+  Fitness: 7
+  FitnessMax: 10
+  Food: 7
+  FoodMax: 10
+  Water: 7
+  WaterMax: 10
+  _FoodIncreaseAmount: 1
+  _foodDecreaseAmount: 1
+  _WaterIncreaseAmount: 1
+  _waterDecreaseAmount: 1
+  _happinessIncreaseAmount: 1
+  _happinessDecreaseAmount: 1
+  _fitnessIncreaseAmount: 1
+  _fitnessDecreaseAmount: 1
+  _countdownDeplesionTime: 5
+  _countdownStartValue: 5
+  _increaseTickRate: 1
+  _increaseTickStart: 1
+  _resourceFood: Food
+  _resourceWater: Water
+  _resourceFitness: Fitness
+  _resourceHappiness: Hamster
+  _movingRandomly: 0
+  isDrinking: 0
+  isEating: 0
+  isRunning: 0
+  isPlaying: 0
+  _uiHealth: {fileID: 0}
+  _uiHappiness: {fileID: 0}
+  _uiFitness: {fileID: 0}
+--- !u!54 &1251759305
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251759298}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1317028587
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +906,7 @@ Transform:
   m_LocalScale: {x: 3, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1443048109
 GameObject:
@@ -925,7 +999,7 @@ Transform:
   m_LocalScale: {x: 1, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1836478362
 GameObject:
@@ -1018,7 +1092,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2040814018
 GameObject:
