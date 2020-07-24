@@ -149,7 +149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2785294}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -8, z: 0}
+  m_LocalPosition: {x: 0, y: -8, z: 0}
   m_LocalScale: {x: 5, y: 3, z: 1}
   m_Children:
   - {fileID: 2118413514}
@@ -182,12 +182,12 @@ MonoBehaviour:
   _foodDecreaseAmount: 0.5
   _WaterIncreaseAmount: 2
   _waterDecreaseAmount: 0.5
-  _happinessIncreaseAmount: 1
+  _happinessIncreaseAmount: 2
   _happinessDecreaseAmount: 1
-  _fitnessIncreaseAmount: 1
+  _fitnessIncreaseAmount: 2
   _fitnessDecreaseAmount: 1
-  _countdownDeplesionTime: 4
-  _countdownStartValue: 1
+  _countdownDeplesionTime: 7.5
+  _countdownStartValue: 5
   _increaseTickRate: 1
   _increaseTickStart: 1
   _resourceFood: Food
@@ -221,16 +221,19 @@ MonoBehaviour:
   _moveLocation:
   - {x: -5, y: -8, z: 0}
   - {x: 5, y: -8, z: 0}
+  - {x: 10, y: -8, z: 0}
+  - {x: -2.5, y: -8, z: 0}
+  - {x: 0, y: -8, z: 0}
   _tempRandomLocation: {x: 0, y: 0, z: 0}
   _canMoveRandomly: 1
   _ranMoveInstance: 0
   _ranMovementSpeed: 2
   _ranSmoothTime: 2
   _ranMovementIntervalsMin: 2
-  _ranMovementIntervalsMax: 2
-  _ranMovementArraySize: 2
+  _ranMovementIntervalsMax: 4
+  _ranMovementArraySize: 5
   foodLocation: {x: -10.5, y: -8, z: 0}
-  waterLocation: {x: 13.17, y: -8, z: 0}
+  waterLocation: {x: 11.5, y: -8, z: 0}
   fitnessLocation: {x: 0, y: -8, z: 0}
   foodName: Food
   waterName: Water

@@ -242,7 +242,7 @@ public class Hamster_Movement_Script : MonoBehaviour
     }
     public void StopAllSounds()
     {
-        Debug.Log("Stop all sounds");
+        //Debug.Log("Stop all sounds");
         PlayingSound.SetActive(false);
         DrinkingSound.SetActive(false);
         EatingSound.SetActive(false);
